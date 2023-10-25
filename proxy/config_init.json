@@ -1,0 +1,15 @@
+{
+   "sym": {
+     "type": ["kuznechik","magma","aes"],
+     "mode": ["CTR", "CBC", "CFB", "ECB", "OFB"],
+     "pad_mode": ["PAD_MODE_1", "PAD_MODE_2"]
+   },
+   "asym": {
+     "hash": ["SHA256", "SHA224", "SHA384", "SHA512", "SHA3_224", "SHA3_256", "SHA3_384", "SHA3_512"]
+   },
+   "sign": {
+     "type": ["gost", "rsa"],
+     "hash": ["streebog256", "streebog512", "SHA256", "SHA224","SHA512","SHA384","SHA3_224","SHA3_256","SHA3_384","SHA3_512"],
+     "param_set": ["A","B","C","D"]
+   }
+}

@@ -1,0 +1,105 @@
+Сначала требуется настроить окружение
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+Для запуска требуется открыть 3 окна консоли
+В одном перейти в директорию proxy, во втором в fintech_app, в третьем в admin_panel
+В обоих окнах запустить python3 main.py
+
+Дальше требуется открыть
+http://127.0.0.1:8000/docs - fintech_app
+и 
+http://127.0.0.1:8008/docs - admin_panel
+
+Далее в fintech_app (8000) перейти в go_to_handshake, нажать Try it out, ввести 
+my_url: http://127.0.0.1:8000/
+go_to_url: http://127.0.0.1:8080/
+нажать execute
+
+Установился handshake, проинициализированы сущности
+
+Далее аналогично перейти в go_to_auth, ввести те же данные в поля, нажать execute.
+Произошло обращение за токеном, токен можно увидеть в Response body.
+Далее аналогичные действия с go_to_get_data.
+Так произойдет обращение за персональными данными, 
+которые пройдут через прокси, зашифруются и на получателе 8000 произодет расшифрование и проверка подписи.
+Полученные данные можно увидеть в Response body снизу.
+
+Автоматически заранее были заполнены метаданные
+{
+  "sym": {
+    "type": "kuznechik",
+    "mode": "CTR",
+    "pad_mode": "PAD_MODE_1"
+  },
+  "asym": {
+    "hash": "SHA256"
+  },
+  "sign": {
+    "type": "gost",
+    "hash": "streebog256",
+    "param_set": "A"
+  }
+}
+
+Можно проделать те же действия с другими метаданными, используя разные типы шифрования и подписи, например:
+Магма с ГОСТ подписью:
+{
+  "sym": {
+    "type": "magma",
+    "mode": "ECB",
+    "pad_mode": "PAD_MODE_1"
+  },
+  "asym": {
+    "hash": "SHA256"
+  },
+  "sign": {
+    "type": "gost",
+    "hash": "streebog256",
+    "param_set": "A"
+  }
+}
+
+AES с rsa подписью:
+{
+  "sym": {
+    "type": "aes",
+    "mode": "ECB",
+    "pad_mode": "PAD_MODE_1"
+  },
+  "asym": {
+    "hash": "SHA256"
+  },
+  "sign": {
+    "type": "rsa",
+    "hash": "SHA3_256"
+  }
+}
+
+
+
+
+Также можно посмотреть панель администратора
+В ней так же делается go_to_handshake с параметрами
+my_url: http://127.0.0.1:8008/
+go_to_url: http://127.0.0.1:8080/
+
+Далее в go_to_change_config:
+По паролю "super secret password" можно ограничить типы используемых шифров (заполненный пример не допускает никаких handshake кроме {
+  "sym": {
+    "type": "kuznechik",
+    "mode": "CTR",
+    "pad_mode": "PAD_MODE_1"
+  },
+  "asym": {
+    "hash": "SHA256"
+  },
+  "sign": {
+    "type": "gost",
+    "hash": "streebog256",
+    "param_set": "A"
+  }
+})
+
+Также можно получить логи работы прокси по get_logs с теми же параметрами. Они будут видны в Responce body.

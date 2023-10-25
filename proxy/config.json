@@ -1,0 +1,32 @@
+{
+  "sym": {
+    "type": [
+      "kuznechik"
+    ],
+    "mode": [
+      "CTR",
+      "ECB"
+    ],
+    "pad_mode": [
+      "PAD_MODE_1"
+    ]
+  },
+  "asym": {
+    "hash": [
+      "SHA256"
+    ]
+  },
+  "sign": {
+    "type": [
+      "gost",
+      "rsa"
+    ],
+    "hash": [
+      "streebog256",
+      "SHA512"
+    ],
+    "param_set": [
+      "A"
+    ]
+  }
+}
